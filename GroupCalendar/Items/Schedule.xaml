@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="GroupCalendar.Items.Schedule"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GroupCalendar.Items"
+             mc:Ignorable="d" 
+             xmlns:uc="clr-namespace:GroupCalendar.Items"
+             d:DesignHeight="1200" d:DesignWidth="800" Loaded="ScheduleLoaded" SizeChanged="ScheduleSizeChanged">
+    <Grid Background="White">
+        <Canvas x:Name="Canvas">
+        </Canvas>
+
+    </Grid>
+</UserControl>

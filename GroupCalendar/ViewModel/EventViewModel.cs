@@ -2,7 +2,7 @@
 using GroupCalendar.Data.Network;
 using GroupCalendar.Data.Remote.Model;
 using GroupCalendar.ViewModel.Commands;
-using GroupCalendar.ViewModel.Wrapper;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace GroupCalendar.ViewModel
 {
-    internal class EventViewModel : INotifyPropertyChange
+    internal class EventViewModel
     {
         public string groupId = "4ab43a46-5baa-428f-92dc-f147f23dc81a";
         public ICommand ButtonCommand { get; set; }
@@ -35,6 +35,7 @@ namespace GroupCalendar.ViewModel
             set { if (value) EventModel.RecurrenceId = Guid.NewGuid(); else EventModel.RecurrenceId = null; }
         }
 
+        public bool IsLoading { get; set; }
         public DateTime LastDate { get; set; } = DateTime.Now;
 
         private IEnumerable<DayOfWeek> days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>();
@@ -76,12 +77,17 @@ namespace GroupCalendar.ViewModel
 
         private bool CheckEventOk()
         {
-            return EventModel.Name != "" && EventModel.Start.Date.Year != 1 && CheckTimeOk() && CheckDateOk();
+            return EventModel.Name != "" && EventModel.Start.Date.Year != 1 && CheckTimeOk() && CheckDateOk() && CheckWeekDayOk();
+        }
+
+        private bool CheckWeekDayOk()
+        {
+            return !IsRecurrent || WeekDaysCheck.Any(day => day.IsChecked);
         }
 
         private bool CheckDateOk()
         {
-            return LastDate.Year > EventModel.Start.Year || (
+            return !IsRecurrent || LastDate.Year > EventModel.Start.Year || (
                 LastDate.Year == EventModel.Start.Year && LastDate.Month > EventModel.Start.Month || (
                     LastDate.Month == EventModel.Start.Month && LastDate.Day >= EventModel.Start.Day
                 )
@@ -110,14 +116,10 @@ namespace GroupCalendar.ViewModel
             }
         }
 
-
-        private StartDateWrapper StartDateWrapper = new StartDateWrapper();
-
-
         public async void UpdateEvent()
         {
-            var repository = new Repository();
-            var group = await repository.GetGroupByIdAsync(groupId);
+            IsLoading = true;
+            var group = await Repository.GetGroupByIdAsync(groupId);
 
             if (IsRecurrent)
             {
@@ -125,7 +127,7 @@ namespace GroupCalendar.ViewModel
                 var lastDay = LastDate.AddDays(1); // to adjust the time difference
                 while (day <= lastDay)
                 {
-                    if (WeekDaysCheck.Find(weekDay => weekDay.DayOfWeek == day.DayOfWeek && weekDay.IsChecked) != null)
+                    if (WeekDaysCheck.Any(weekDay => weekDay.DayOfWeek == day.DayOfWeek && weekDay.IsChecked))
                     {
                         var dayEventModel = new EventModel
                         {
@@ -167,7 +169,9 @@ namespace GroupCalendar.ViewModel
 
             try
             {
-                await repository.UpdateGroupEventsAsync(group);
+                await Repository.UpdateGroupEventsAsync(group);
+                IsLoading = false;
+                DialogHost.Close(null);
             }
             catch (HttpRequestException e)
             {

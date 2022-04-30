@@ -3,13 +3,15 @@
 namespace GroupCalendar.View
 {
     /// <summary>
-    /// Lógica de interacción para EventPage.xaml
+    /// Lógica de interacción para TimetablePage.xaml
     /// </summary>
-    public partial class EventPage : Page
+    public partial class TimetablePage : Page
     {
-        public EventPage()
+
+        public TimetablePage()
         {
             InitializeComponent();
         }
+
     }
 }

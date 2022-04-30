@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace GroupCalendar.ViewModel.Commands
+namespace GroupCalendar.ViewModel
 {
-    public class RelayCommand : ICommand
+    internal class RelayCommandPrm<T> : ICommand
     {
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
 
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+        public RelayCommandPrm(Action<object> execute, Predicate<object> canExecute = null)
         {
             if (execute == null) throw new ArgumentNullException("execute");
 
@@ -31,6 +31,5 @@ namespace GroupCalendar.ViewModel.Commands
         {
             _execute(parameter ?? "<N/A>");
         }
-
     }
 }

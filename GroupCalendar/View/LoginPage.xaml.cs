@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace GroupCalendar
+namespace GroupCalendar.View
 {
     /// <summary>
     /// Lógica de interacción para LoginPage.xaml

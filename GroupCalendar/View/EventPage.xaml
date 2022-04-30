@@ -1,13 +1,14 @@
-﻿<Page x:Class="GroupCalendar.View.Timetable.EventPage"
+﻿<Page x:Class="GroupCalendar.View.EventPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:GroupCalendar.View.Timetable"
       mc:Ignorable="d"
-      xmlns:vm="clr-namespace:GroupCalendar.ViewModel" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:vm="clr-namespace:GroupCalendar.ViewModel" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:converter="clr-namespace:GroupCalendar.ViewModel.Converter"
       xmlns:validation="clr-namespace:GroupCalendar.ViewModel.Validation"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       d:DesignHeight="380" d:DesignWidth="800"
       Background="White"
       Title="EventPage">
@@ -20,126 +21,123 @@
         <converter:DateConverter x:Key="DateConverter"/>
         <converter:TimeConverter x:Key="TimeConverter"/>
     </Page.Resources>
-    
-    <materialDesign:DialogHost CloseOnClickAway="True">
-        <materialDesign:DialogHost.DialogContent>
-            <Grid Margin="20" DataContext="{StaticResource vm}">
-                <TextBlock Text="{Binding EventModel.Start, NotifyOnSourceUpdated=True}"/>
-            </Grid>
-        </materialDesign:DialogHost.DialogContent>
 
-        <Grid DataContext="{StaticResource vm}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+    <Grid DataContext="{StaticResource vm}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         
-            <StackPanel>
-                <TextBox Text="{Binding EventModel.Name, Mode=TwoWay}"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         materialDesign:HintAssist.Hint="Nombre" 
-                         VerticalAlignment="Top"
-                         Margin="10"/>
-                <TextBox Text="{Binding EventModel.Description, Mode=TwoWay}"
-                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
-                         VerticalAlignment="Top"
-                         Height="100"
-                         Margin="10"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
-                         materialDesign:HintAssist.Hint="Descripción" />
-                <Label>Color</Label>
-                <materialDesign:ColorPicker Color="{Binding EventModel.Color, Converter={StaticResource ColorConverter}}"/>
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-                <Label>Día del evento</Label>
-                <WrapPanel Orientation="Horizontal" Margin="5">
-                    <DatePicker
-                        Margin="5"
-                        materialDesign:HintAssist.Hint="Elige una fecha"
-                        Style="{StaticResource MaterialDesignOutlinedDatePicker}"
-                        SelectedDate="{
-                            Binding EventModel.Date, 
-                            Mode=TwoWay, 
-                            Converter={StaticResource DateConverter}
-                        }"/>
-                    <materialDesign:TimePicker 
-                        Margin="5" 
-                        materialDesign:HintAssist.Hint="Hora inicio"  
-                        Style="{StaticResource MaterialDesignOutlinedTimePicker}" 
-                        Is24Hours="True"
-                        Text="{
-                            Binding EventModel.StartTime, 
-                            Mode=TwoWay, 
-                            Converter={StaticResource TimeConverter}
-                        }" />
-                    <materialDesign:TimePicker 
-                        Margin="5" 
-                        materialDesign:HintAssist.Hint="Hora fin"
-                        Style="{StaticResource MaterialDesignOutlinedTimePicker}" 
-                        Is24Hours="True"
-                        Text="{
-                            Binding EventModel.EndTime, 
-                            Mode=TwoWay, 
-                            Converter={StaticResource TimeConverter}
-                        }" />
-                    <DatePicker
-                        Margin="5" 
-                        Visibility="{
-                            Binding IsRecurrent, 
-                            Converter={
-                                StaticResource BoolTovisible
-                            }
-                        }"
-                        SelectedDate="{Binding LastDate}"
-                        materialDesign:HintAssist.Hint="Elige la fecha de fin de repetición"
-                        Style="{StaticResource MaterialDesignOutlinedDatePicker}">
-                    </DatePicker>
-                    <WrapPanel
-                        Visibility="{
-                            Binding IsRecurrent, 
-                            Converter={
-                                StaticResource BoolTovisible
-                            }
-                        }"
-                        >
-                        <ListBox
-                            Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}"
-                            ItemsSource="{Binding WeekDaysCheck}">
+        <StackPanel Margin="25">
+            <TextBox Text="{Binding EventModel.Name, Mode=TwoWay}"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        materialDesign:HintAssist.Hint="Nombre" 
+                        VerticalAlignment="Top"
+                        Margin="10"/>
+            <TextBox Text="{Binding EventModel.Description, Mode=TwoWay}"
+                        Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                        VerticalAlignment="Top"
+                        Height="100"
+                        Margin="10"
+                        AcceptsReturn="True"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Auto"
+                        materialDesign:HintAssist.Hint="Descripción" />
+            <Label>Color</Label>
+            <materialDesign:ColorPicker Color="{Binding EventModel.Color, Converter={StaticResource ColorConverter}}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="0,0,25,10">
+            <Label>Día del evento</Label>
+            <WrapPanel Orientation="Horizontal" Margin="5">
+                <DatePicker
+                    Margin="5"
+                    materialDesign:HintAssist.Hint="Elige una fecha"
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}"
+                    SelectedDate="{
+                        Binding EventModel.Date, 
+                        Mode=TwoWay, 
+                        Converter={StaticResource DateConverter}
+                    }"/>
+                <materialDesign:TimePicker 
+                    Margin="5" 
+                    materialDesign:HintAssist.Hint="Hora inicio"  
+                    Style="{StaticResource MaterialDesignOutlinedTimePicker}" 
+                    Is24Hours="True"
+                    Text="{
+                        Binding EventModel.StartTime, 
+                        Mode=TwoWay, 
+                        Converter={StaticResource TimeConverter}
+                    }" />
+                <materialDesign:TimePicker 
+                    Margin="5" 
+                    materialDesign:HintAssist.Hint="Hora fin"
+                    Style="{StaticResource MaterialDesignOutlinedTimePicker}" 
+                    Is24Hours="True"
+                    Text="{
+                        Binding EventModel.EndTime, 
+                        Mode=TwoWay, 
+                        Converter={StaticResource TimeConverter}
+                    }" />
+                <DatePicker
+                    Margin="5" 
+                    Visibility="{
+                        Binding IsRecurrent, 
+                        Converter={
+                            StaticResource BoolTovisible
+                        }
+                    }"
+                    SelectedDate="{Binding LastDate}"
+                    materialDesign:HintAssist.Hint="Elige la fecha de fin de repetición"
+                    Style="{StaticResource MaterialDesignOutlinedDatePicker}">
+                </DatePicker>
+                <WrapPanel
+                    Visibility="{
+                        Binding IsRecurrent, 
+                        Converter={
+                            StaticResource BoolTovisible
+                        }
+                    }"
+                    >
+                    <ListBox
+                        Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBox}"
+                        ItemsSource="{Binding WeekDaysCheck}">
 
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBoxItem}">
-                                    <Setter Property="IsSelected"
-                                            Value="{Binding IsChecked, Mode=TwoWay}" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Day}"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </WrapPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MaterialDesignFilterChipPrimaryOutlineListBoxItem}">
+                                <Setter Property="IsSelected"
+                                        Value="{Binding IsChecked, Mode=TwoWay}" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Day}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </WrapPanel>
-                <DockPanel Margin="5">
-                    <Label DockPanel.Dock="Left">¿Es recurrente?</Label>
-                    <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding IsRecurrent}"/>
-                    <Label/>
-                </DockPanel>
-                <DockPanel Margin="5">
-                    <Label DockPanel.Dock="Left">¿Requiere confirmación de los participantes?</Label>
-                    <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding EventModel.RequireConfirmation}"/>
-                    <Label/>
-                </DockPanel>
-                <Button Margin="20" Command="{Binding ButtonCommand }" HorizontalAlignment="Center">Crear evento</Button>
+            </WrapPanel>
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Left">¿Es recurrente?</Label>
+                <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding IsRecurrent}"/>
+                <Label/>
+            </DockPanel>
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Left">¿Requiere confirmación de los participantes?</Label>
+                <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding EventModel.RequireConfirmation}"/>
+                <Label/>
+            </DockPanel>
+            <Button Margin="20" HorizontalAlignment="Center" Command="{Binding ButtonCommand}" IsEnabled="True"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="True">
+                Enviar evento
+            </Button>
 
-            </StackPanel>
+        </StackPanel>
 
-        </Grid>
-    </materialDesign:DialogHost>
+    </Grid>
 </Page>

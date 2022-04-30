@@ -5,7 +5,12 @@
 	<TargetFramework>netcoreapp3.1</TargetFramework>
 	<Nullable>enable</Nullable>
 	<UseWPF>true</UseWPF>
+	<ApplicationIcon>Assets\calendar_icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+	<Content Include="Assets\calendar_icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
 	<PackageReference Include="FirebaseAuthentication.net" Version="4.0.0-alpha.2" />
@@ -17,11 +22,11 @@
 	<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
 	<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1185.39" />
 	<PackageReference Include="RestSharp" Version="107.3.0" />
+	<PackageReference Include="System.Reactive" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
 	<Folder Include="Domain\" />
-	<Folder Include="Network\" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,8 @@ using Firebase.Auth.Providers;
 using Firebase.Auth.Repository;
 using Firebase.Auth.UI;
 using GroupCalendar.Core;
-using System;
+using GroupCalendar.Data.Network;
+using GroupCalendar.View;
 using System.Windows;
 
 namespace GroupCalendar
@@ -15,6 +16,7 @@ namespace GroupCalendar
 
         public MainWindow()
         {
+            StaticResources.mainWindow = this;
             FirebaseUI.Initialize(new FirebaseUIConfig
             {
                 ApiKey = "AIzaSyBUAAkXJdnTrSWSAh1mW5fXrPwiw3fI-dY",
@@ -45,16 +47,28 @@ namespace GroupCalendar
                 }
                 else if (loginUIShowing)
                 {
-                    HideLoginUI();
-                    LoginButton.Content = e!.User!.Info.Uid + " " + e.User.Info.Email;
-                    ApplicationState.SetValue("token", e.User.Credential.IdToken);
+                    Success(e);
                 }
             });
         }
 
+        private async void Success(UserEventArgs e)
+        {
+            ApplicationState.SetValue("token", e.User.Credential.IdToken);
+            var user = await Repository.GetUserByIdAsync(e.User.Uid);
+            if (user.Groups.Length == 0)
+            {
+                // TODO: Control here if user has no group, and take the user to group creation
+                return;
+            }
+            ApplicationState.SetValue("group_id", user.Groups[0]);
+            HideLoginUI();
+        }
+
+
         private void HideLoginUI()
         {
-            Frame.Source = new Uri("View/EventPage.xaml", UriKind.Relative);
+            Frame.Content = new TimetablePage();
             loginUIShowing = false;
         }
 
@@ -62,15 +76,6 @@ namespace GroupCalendar
         {
             Frame.Visibility = Visibility.Visible;
             loginUIShowing = true;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.IsEnabled = true;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
         }
     }
 }

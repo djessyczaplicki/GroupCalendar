@@ -11,9 +11,9 @@ namespace GroupCalendar.Data.Network
 {
     internal class Repository
     {
-        string baseUrl = "https://groupcalendar-53829-default-rtdb.europe-west1.firebasedatabase.app";
+        private static string baseUrl = "https://groupcalendar-53829-default-rtdb.europe-west1.firebasedatabase.app";
 
-        private void SetupRequest(RestRequest request, object? obj = null)
+        private static void SetupRequest(RestRequest request, object? obj = null)
         {
             var token = ApplicationState.GetValue<string>("token");
             if (token == null)
@@ -33,7 +33,7 @@ namespace GroupCalendar.Data.Network
             }
         }
 
-        public async Task<GroupModel> GetGroupByIdAsync(string id)
+        public static async Task<GroupModel> GetGroupByIdAsync(string id)
         {
             var client = new RestClient();
             var request = new RestRequest($"{baseUrl}/groups/{id}.json", Method.Get);
@@ -44,7 +44,7 @@ namespace GroupCalendar.Data.Network
             return data;
         }
 
-        public async Task<List<EventModel>> UpdateGroupEventsAsync(GroupModel group)
+        public static async Task<List<EventModel>> UpdateGroupEventsAsync(GroupModel group)
         {
             try
             {
@@ -58,6 +58,17 @@ namespace GroupCalendar.Data.Network
                 throw new ApiException(ex.Message);
             }
 
+        }
+
+        public static async Task<UserModel> GetUserByIdAsync(string id)
+        {
+            var client = new RestClient();
+            var request = new RestRequest($"{baseUrl}/users/{id}.json", Method.Get);
+            SetupRequest(request);
+
+            var response = await client.GetAsync(request);
+            var data = JsonConvert.DeserializeObject<UserModel>(response.Content);
+            return data;
         }
     }
 
