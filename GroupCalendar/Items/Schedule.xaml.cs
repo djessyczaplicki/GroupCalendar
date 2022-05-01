@@ -29,6 +29,8 @@ namespace GroupCalendar.Items
         double eventWidth;
         List<Border> horizontalLines = new List<Border>();
         List<Border> verticalLines = new List<Border>();
+        private List<BasicEvent> basicEvents = new List<BasicEvent>();
+
         public ObservableCollection<EventModel> EventModels
         {
             get { return (ObservableCollection<EventModel>)GetValue(EventModelsProperty); }
@@ -49,11 +51,6 @@ namespace GroupCalendar.Items
         }
 
         private void ScheduleLoaded(object sender, RoutedEventArgs e)
-        {
-            RefreshUi();
-        }
-
-        private void RefreshUi()
         {
             //events = ((TimetableViewModel)(DataContext)).EventsToShow;
             eventWidth = Canvas.ActualWidth / DaysToShow;
@@ -81,6 +78,27 @@ namespace GroupCalendar.Items
             {
                 var drawnEvent = DrawEvent(eventModel);
                 Canvas.Children.Add(drawnEvent);
+            }
+            EventModels.CollectionChanged += EventModels_CollectionChanged;
+        }
+
+        private void EventModels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            RefreshUi();
+        }
+
+        private void RefreshUi()
+        {
+            basicEvents.ForEach(e => Canvas.Children.Remove(e));
+            basicEvents.Clear();
+            foreach (EventModel eventModel in EventModels)
+            {
+                var drawnEvent = DrawEvent(eventModel);
+                Canvas.Children.Add(drawnEvent);
+            }
+            if (StaticResources.basicDayHeader != null)
+            {
+                StaticResources.basicDayHeader.RefreshUi();
             }
         }
 
@@ -118,6 +136,7 @@ namespace GroupCalendar.Items
             Canvas.SetTop(basicEvent, eventTop);
             basicEvent.Width = eventWidth;
             basicEvent.Height = eventHeight;
+            basicEvents.Add(basicEvent);
             return basicEvent;
         }
 
@@ -128,10 +147,10 @@ namespace GroupCalendar.Items
 
         private void ScheduleSizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
         {
+            RefreshUi();
             eventWidth = e.NewSize.Width / DaysToShow;
-            foreach (object o in Canvas.Children)
+            foreach (BasicEvent basicEvent in basicEvents)
             {
-                var basicEvent = o as BasicEvent;
                 if (basicEvent != null)
                 {
                     var eventLeft = GetEventLeft(basicEvent.EventModel, eventWidth);

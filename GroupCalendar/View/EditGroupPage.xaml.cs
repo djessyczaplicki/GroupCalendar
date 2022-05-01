@@ -3,11 +3,11 @@
 namespace GroupCalendar.View
 {
     /// <summary>
-    /// Lógica de interacción para EventPage.xaml
+    /// Lógica de interacción para EditGroup.xaml
     /// </summary>
-    public partial class EventPage : Page
+    public partial class EditGroupPage : Page
     {
-        public EventPage()
+        public EditGroupPage()
         {
             InitializeComponent();
         }

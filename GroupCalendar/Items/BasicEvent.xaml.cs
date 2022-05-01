@@ -25,7 +25,7 @@ namespace GroupCalendar.Items
         private void EventBackgroundMouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             ApplicationState.SetValue("event_id", EventModel.Id);
-            EventPage eventPage = new EventPage();
+            EditEventPage eventPage = new EditEventPage();
             StaticResources.mainWindow.Content = eventPage;
         }
     }

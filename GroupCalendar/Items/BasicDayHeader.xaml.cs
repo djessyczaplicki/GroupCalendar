@@ -26,6 +26,7 @@ namespace GroupCalendar.Items
 
         private void BasicDayHeaderLoaded(object sender, RoutedEventArgs e)
         {
+            StaticResources.basicDayHeader = this;
             for (int i = 0; i < daysToShow; i++)
             {
                 var col = new ColumnDefinition();
@@ -40,6 +41,22 @@ namespace GroupCalendar.Items
                 Grid.Children.Add(text);
                 Grid.SetColumn(text, i);
             }
+
         }
+
+        public void RefreshUi()
+        {
+            int i = 0;
+            foreach (object o in Grid.Children)
+            {
+                TextBlock text = (TextBlock)o;
+                if (text == null) return;
+                var day = FirstDay.AddDays(i);
+                text.Text = day.ToString("dddd, dd MMMM yyyy");
+                i++;
+            }
+        }
+
+
     }
 }

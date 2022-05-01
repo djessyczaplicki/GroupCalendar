@@ -14,7 +14,7 @@ namespace GroupCalendar.Items
             InitializeComponent();
         }
 
-        private void BasicSidebarLoaded(object sender, System.Windows.RoutedEventArgs e)
+        private void BasicSidebarLoaded(object sender, RoutedEventArgs e)
         {
             Height = hourHeight * 24;
             for (int hour = 0; hour < 24; hour++)
