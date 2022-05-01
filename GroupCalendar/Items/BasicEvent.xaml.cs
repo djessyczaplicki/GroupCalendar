@@ -18,6 +18,7 @@ namespace GroupCalendar.Items
             InitializeComponent();
             EventModel = eventModel;
             EventName.Text = eventModel.Name;
+            EventDescription.Text = eventModel.Description;
             EventBackground.Background = (SolidColorBrush)new BrushConverter().ConvertFromString(eventModel.Color.ToString());
         }
 

@@ -1,4 +1,5 @@
-﻿using GroupCalendar.Data.Local;
+﻿using GroupCalendar.Core;
+using GroupCalendar.Data.Local;
 using GroupCalendar.Data.Network;
 using GroupCalendar.Data.Remote.Model;
 using GroupCalendar.ViewModel.Commands;
@@ -16,7 +17,7 @@ namespace GroupCalendar.ViewModel
 {
     internal class EventViewModel
     {
-        public string groupId = "4ab43a46-5baa-428f-92dc-f147f23dc81a";
+        public Guid groupId = new Guid("4ab43a46-5baa-428f-92dc-f147f23dc81a");
         public ICommand ButtonCommand { get; set; }
 
         private EventModel eventModel = new EventModel
@@ -43,6 +44,7 @@ namespace GroupCalendar.ViewModel
 
         public EventViewModel()
         {
+            LoadEvent();
             foreach (var day in days)
             {
                 CultureInfo ci = new CultureInfo("Es-Es");
@@ -68,6 +70,16 @@ namespace GroupCalendar.ViewModel
                 };
             }
             ButtonCommand = new RelayCommand(o => UpdateEvent(), o => CheckEventOk());
+        }
+
+        public async void LoadEvent()
+        {
+            groupId = ApplicationState.GetValue<Guid>("group_id");
+            if (groupId == Guid.Empty) throw new Exception("Y el group id donde está ?");
+            var group = await Repository.GetGroupByIdAsync(groupId.ToString());
+            var eventId = ApplicationState.GetValue<Guid>("event_id");
+            if (eventId == Guid.Empty) return;
+            EventModel = group.Events.Find(e => e.Id == eventId);
         }
 
         private string Capitalize(string str)
@@ -119,7 +131,7 @@ namespace GroupCalendar.ViewModel
         public async void UpdateEvent()
         {
             IsLoading = true;
-            var group = await Repository.GetGroupByIdAsync(groupId);
+            var group = await Repository.GetGroupByIdAsync(groupId.ToString());
 
             if (IsRecurrent)
             {

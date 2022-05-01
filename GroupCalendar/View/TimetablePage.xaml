@@ -24,49 +24,67 @@
         <Grid DataContext="{StaticResource vm}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-
-            <ListView Background="#252525"
-                  ScrollViewer.CanContentScroll="False"
-                  ItemsSource="{Binding Groups}"
-                      Width="100">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Name}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <uc:BasicDayHeader Margin="40,5,18,5" FirstDay="{Binding FirstDay, Mode=TwoWay}"/>
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <uc:BasicSidebarLabel></uc:BasicSidebarLabel>
-                    <uc:Schedule FirstDay="{Binding FirstDay, Mode=TwoWay}" Grid.Column="1" EventModels="{Binding EventsToShow, Mode=TwoWay}"/>
-
-
-                </Grid>
+            <Grid Height="80" Background="#d9e2ff">
+                <DockPanel>
+                    <uc:StatusBar DockPanel.Dock="Top" Height="25" />
+                    <Button DockPanel.Dock="Left"
+                            Command="{Binding PrevWeekCommand}"
+                            Foreground="#00184a"
+                            Style="{StaticResource MaterialDesignIconButton}">
+                        <materialDesign:PackIcon Kind="ArrowLeftBoldOutline" />
+                    </Button>
+                    <Button DockPanel.Dock="Right"
+                            Command="{Binding NextWeekCommand}"
+                            Foreground="#00184a"
+                            Style="{StaticResource MaterialDesignIconButton}">
+                        <materialDesign:PackIcon Kind="ArrowRightBoldOutline" />
+                    </Button>
+                    <Label/>
+                </DockPanel>
                 
-            </ScrollViewer>
+            </Grid>
             
-            <Button Grid.Row="1"
-              Style="{StaticResource MaterialDesignFloatingActionLightButton}"
-              Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-              ToolTip="Añadir evento"
-              HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-              Margin="0,0,30,30"
-              Cursor="Hand">
-                <materialDesign:PackIcon
-                    Kind="Plus"
-                    Height="30"
-                    Width="30"/>
-            </Button>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+            
+                <uc:BasicDayHeader Margin="40,5,18,5" FirstDay="{Binding FirstDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <uc:BasicSidebarLabel></uc:BasicSidebarLabel>
+                        <uc:Schedule FirstDay="{Binding FirstDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" EventModels="{Binding EventsToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                    </Grid>
+                
+                </ScrollViewer>
+            
+                <Button Grid.Row="1"
+                  Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                  Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                  ToolTip="Añadir evento"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom"
+                  Margin="0,0,30,30"
+                  Background="#d9e2ff"
+                  BorderBrush="#d9e2ff"
+                  Cursor="Hand">
+                    <materialDesign:PackIcon
+                        Kind="Plus"
+                        Foreground="#00184a"
+                        Height="20"
+                        Width="20"/>
+                </Button>
+            </Grid>
         </Grid>
     </materialDesign:DialogHost>
 </Page>

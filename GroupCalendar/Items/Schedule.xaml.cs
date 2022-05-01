@@ -23,6 +23,7 @@ namespace GroupCalendar.Items
            DependencyProperty.Register("FirstDay", typeof(DateTimeOffset), typeof(Schedule), new PropertyMetadata(DateTimeOffset.Now));
 
 
+
         public int DaysToShow = 7;
         readonly int hourHeight = 60;
         double eventWidth;
@@ -36,55 +37,25 @@ namespace GroupCalendar.Items
         public static readonly DependencyProperty EventModelsProperty =
             DependencyProperty.Register("EventModels", typeof(ObservableCollection<EventModel>), typeof(Schedule), new PropertyMetadata(new ObservableCollection<EventModel>()));
 
-
+        public ObservableCollection<EventModel> events
+        {
+            get; set;
+        }
 
         public Schedule()
         {
             InitializeComponent();
-            //EventModels.Add(new EventModel()
-            //{
-            //    Start = DateTimeOffset.Now,
-            //    End = DateTimeOffset.Now.AddHours(1),
-            //    Name = "Eventito"
-            //});
-            //EventModels.Add(new EventModel()
-            //{
 
-            //    Start = DateTimeOffset.Now.AddHours(2),
-            //    End = DateTimeOffset.Now.AddHours(4),
-            //    Name = "Otro evento"
-
-            //});
-            //EventModels.Add(new EventModel()
-            //{
-
-            //    Start = DateTimeOffset.Now.AddHours(-6),
-            //    End = DateTimeOffset.Now.AddHours(-4),
-            //    Name = "Último primer evento"
-
-            //});
-            //EventModels.Add(new EventModel()
-            //{
-
-            //    Start = DateTimeOffset.Now.AddDays(1),
-            //    End = DateTimeOffset.Now.AddDays(1).AddHours(3),
-            //    Color = new CustomColorModel(255, 100, 150),
-            //    Name = "2o Día evento"
-
-            //});
-            //EventModels.Add(new EventModel()
-            //{
-
-            //    Start = DateTimeOffset.Now.AddDays(3),
-            //    End = DateTimeOffset.Now.AddDays(3).AddHours(3),
-            //    Color = new CustomColorModel(200, 100, 150),
-            //    Name = "otro Día evento"
-
-            //});
         }
 
-        private void ScheduleLoaded(object sender, System.Windows.RoutedEventArgs e)
+        private void ScheduleLoaded(object sender, RoutedEventArgs e)
         {
+            RefreshUi();
+        }
+
+        private void RefreshUi()
+        {
+            //events = ((TimetableViewModel)(DataContext)).EventsToShow;
             eventWidth = Canvas.ActualWidth / DaysToShow;
             Height = hourHeight * 24;
             for (int hour = 1; hour < 24; hour++)
@@ -111,7 +82,6 @@ namespace GroupCalendar.Items
                 var drawnEvent = DrawEvent(eventModel);
                 Canvas.Children.Add(drawnEvent);
             }
-
         }
 
         private Border DrawVerticalLine(int day)
