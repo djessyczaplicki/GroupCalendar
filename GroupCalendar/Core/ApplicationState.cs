@@ -27,5 +27,10 @@ namespace GroupCalendar.Core
             }
         }
 
+        public static void PurgeValue(string key)
+        {
+            _values.Remove(key);
+        }
+
     }
 }

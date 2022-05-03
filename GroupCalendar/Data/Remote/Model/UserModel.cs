@@ -1,7 +1,9 @@
 ﻿namespace GroupCalendar.Data.Remote.Model
 {
+    using GroupCalendar.Core;
     using Newtonsoft.Json;
     using System;
+    using System.Globalization;
 
     public partial class UserModel
     {
@@ -25,5 +27,17 @@
 
         [JsonProperty("age")]
         public int Age { get; set; }
+
+
+
+        public string FullNameYou
+        {
+            get
+            {
+                var you = (Id == ApplicationState.GetValue<string>("uid")) ? " (Tú)" : "";
+                var fullName = $"{Name} {Surname}{you}";
+                return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(fullName.ToLower());
+            }
+        }
     }
 }

@@ -56,6 +56,7 @@ namespace GroupCalendar
         {
             WindowStyle = WindowStyle.None;
             ApplicationState.SetValue("token", e.User.Credential.IdToken);
+            ApplicationState.SetValue("uid", e.User.Uid);
             var user = await Repository.GetUserByIdAsync(e.User.Uid);
             if (user.Groups.Length == 0)
             {

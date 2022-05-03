@@ -26,6 +26,7 @@ namespace GroupCalendar.Items
 
         private void BasicDayHeaderLoaded(object sender, RoutedEventArgs e)
         {
+            var today = DateTimeOffset.Now;
             StaticResources.basicDayHeader = this;
             for (int i = 0; i < daysToShow; i++)
             {
@@ -40,6 +41,10 @@ namespace GroupCalendar.Items
                 text.Text = day.ToString("dddd, dd MMMM yyyy");
                 Grid.Children.Add(text);
                 Grid.SetColumn(text, i);
+                if ((day - today).Days == 0)
+                {
+                    text.TextDecorations = TextDecorations.Underline;
+                }
             }
 
         }
@@ -47,6 +52,7 @@ namespace GroupCalendar.Items
         public void RefreshUi()
         {
             int i = 0;
+            var today = DateTimeOffset.Now;
             foreach (object o in Grid.Children)
             {
                 TextBlock text = (TextBlock)o;
@@ -54,6 +60,14 @@ namespace GroupCalendar.Items
                 var day = FirstDay.AddDays(i);
                 text.Text = day.ToString("dddd, dd MMMM yyyy");
                 i++;
+                if (day.Date == today.Date)
+                {
+                    text.TextDecorations = TextDecorations.Underline;
+                }
+                else
+                {
+                    text.TextDecorations = null;
+                }
             }
         }
 

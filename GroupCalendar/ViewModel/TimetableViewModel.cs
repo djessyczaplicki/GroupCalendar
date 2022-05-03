@@ -19,6 +19,7 @@ namespace GroupCalendar.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand NextWeekCommand { get; set; }
         public ICommand PrevWeekCommand { get; set; }
+        public ICommand CreateEventCommand { get; set; }
 
         int weekOffset = 0;
         public ObservableCollection<EventModel> EventModels
@@ -50,6 +51,12 @@ namespace GroupCalendar.ViewModel
             LoadGroup();
             NextWeekCommand = new RelayCommand(o => ShowNextWeek());
             PrevWeekCommand = new RelayCommand(o => ShowPreviousWeek());
+            CreateEventCommand = new RelayCommand(o => CreateNewEvent());
+        }
+
+        private void CreateNewEvent()
+        {
+
         }
 
         private async void LoadGroup()

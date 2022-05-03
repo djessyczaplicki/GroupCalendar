@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:GroupCalendar.Items"
              mc:Ignorable="d" 
              xmlns:uc="clr-namespace:GroupCalendar.Items"
-             d:DesignHeight="1200" d:DesignWidth="800" Loaded="ScheduleLoaded" SizeChanged="ScheduleSizeChanged">
+             d:DesignHeight="1920" d:DesignWidth="800" Loaded="ScheduleLoaded" SizeChanged="ScheduleSizeChanged">
     <Grid Background="White">
         <Canvas x:Name="Canvas">
         </Canvas>

@@ -20,6 +20,8 @@ namespace GroupCalendar.Items
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
+                if (StaticResources.mainWindow.WindowState == WindowState.Maximized)
+                    StaticResources.mainWindow.WindowState = WindowState.Normal;
                 StaticResources.mainWindow.DragMove();
             }
         }

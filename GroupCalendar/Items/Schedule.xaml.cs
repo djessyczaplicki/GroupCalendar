@@ -25,7 +25,7 @@ namespace GroupCalendar.Items
 
 
         public int DaysToShow = 7;
-        readonly int hourHeight = 60;
+        readonly int hourHeight = 80;
         double eventWidth;
         List<Border> horizontalLines = new List<Border>();
         List<Border> verticalLines = new List<Border>();
@@ -128,7 +128,7 @@ namespace GroupCalendar.Items
         {
             var basicEvent = new BasicEvent(eventModel);
             var minuteHeight = hourHeight / 60;
-            var minEventHeight = hourHeight / 2;
+            var minEventHeight = hourHeight / 4;
             var eventTop = eventModel.Start.Hour * hourHeight + eventModel.Start.Minute * minuteHeight;
             var eventLeft = GetEventLeft(eventModel, eventWidth);
             var eventHeight = Math.Max((eventModel.End.Hour - eventModel.Start.Hour) * hourHeight + (eventModel.End.Minute - eventModel.Start.Minute) * minuteHeight, minEventHeight);
@@ -142,7 +142,7 @@ namespace GroupCalendar.Items
 
         private double GetEventLeft(EventModel eventModel, double eventWidth)
         {
-            return (eventModel.Start - FirstDay).Days * eventWidth;
+            return (eventModel.Start.Date - FirstDay.Date).Days * eventWidth;
         }
 
         private void ScheduleSizeChanged(object sender, System.Windows.SizeChangedEventArgs e)

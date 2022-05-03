@@ -27,16 +27,39 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Grid Height="80" Background="#d9e2ff">
+            <Grid Height="90" Background="#d9e2ff">
                 <DockPanel>
                     <uc:StatusBar DockPanel.Dock="Top" Height="25" />
                     <Button DockPanel.Dock="Left"
+                            Margin="5"
+                            Command="{Binding OpenDrawer}"
+                            Foreground="#00184a"
+                            Style="{StaticResource MaterialDesignIconButton}">
+                        <materialDesign:PackIcon Kind="Menu" />
+                    </Button>
+                    <Button DockPanel.Dock="Left"
+                            Margin="5"
                             Command="{Binding PrevWeekCommand}"
                             Foreground="#00184a"
                             Style="{StaticResource MaterialDesignIconButton}">
                         <materialDesign:PackIcon Kind="ArrowLeftBoldOutline" />
                     </Button>
+                    <TextBlock DockPanel.Dock="Left"
+                               Margin="10 5 0 10"
+                               FontWeight="SemiBold"
+                               FontSize="20"
+                               Foreground="#00184a"
+                               VerticalAlignment="Center"
+                               Text="Horario: "/>
+                    <TextBlock DockPanel.Dock="Left"
+                               Margin="0 5 0 10"
+                               FontWeight="SemiBold"
+                               FontSize="20"
+                               Foreground="#00184a"
+                               VerticalAlignment="Center"
+                               Text="Juanito"/>
                     <Button DockPanel.Dock="Right"
+                            Margin="5"
                             Command="{Binding NextWeekCommand}"
                             Foreground="#00184a"
                             Style="{StaticResource MaterialDesignIconButton}">

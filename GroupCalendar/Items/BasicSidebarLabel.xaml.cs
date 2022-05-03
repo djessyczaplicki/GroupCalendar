@@ -8,7 +8,7 @@ namespace GroupCalendar.Items
     /// </summary>
     public partial class BasicSidebarLabel : UserControl
     {
-        int hourHeight = 60;
+        int hourHeight = 80;
         public BasicSidebarLabel()
         {
             InitializeComponent();

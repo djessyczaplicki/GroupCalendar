@@ -11,5 +11,6 @@ namespace GroupCalendar.View
         {
             InitializeComponent();
         }
+
     }
 }

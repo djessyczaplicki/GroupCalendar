@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GroupCalendar.Core;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -6,38 +7,42 @@ namespace GroupCalendar.Data.Remote.Model
 {
 
 
-    public partial class EventModel
+    public partial class EventModel : ObservableObject
     {
         [JsonProperty("color")]
-        public CustomColorModel Color { get; set; } = new CustomColorModel(255, 100, 100);
+        private CustomColorModel color = new CustomColorModel(255, 100, 100);
 
         [JsonProperty("confirmedUsers", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> ConfirmedUsers { get; set; } = new List<string>();
+        private List<string> confirmedUsers = new List<string>();
 
         [JsonProperty("description")]
-        public string? Description { get; set; }
+        private string? description;
 
         [JsonProperty("end")]
-        public DateTimeOffset End { get; set; }
+        private DateTimeOffset end;
 
         [JsonProperty("id")]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        private Guid id = Guid.NewGuid();
 
         [JsonProperty("name")]
-        public string Name { get; set; } = "";
+        private string name = "";
 
         [JsonProperty("recurrenceId", NullValueHandling = NullValueHandling.Ignore)]
-        public Guid? RecurrenceId { get; set; }
+        private Guid? recurrenceId;
 
         [JsonProperty("requireConfirmation")]
-        public bool RequireConfirmation { get; set; }
+        private bool requireConfirmation;
 
         [JsonProperty("start")]
-        public DateTimeOffset Start { get; set; }
+        private DateTimeOffset start;
+
+
 
         public EventModel() { }
 
 
+
+        #region Properties
         [JsonIgnore]
         public DateTimeOffset StartTime
         {
@@ -59,9 +64,105 @@ namespace GroupCalendar.Data.Remote.Model
             set { End = ChangeTime(End, value); }
         }
 
+        [JsonIgnore]
+        public CustomColorModel Color
+        {
+            get => color;
+            set
+            {
+                color = value;
+                OnPropertyChanged();
+            }
+        }
 
+        [JsonIgnore]
+        public List<string> ConfirmedUsers
+        {
+            get { return confirmedUsers; }
+            set
+            {
+                confirmedUsers = value;
+                OnPropertyChanged();
+            }
+        }
 
+        [JsonIgnore]
+        public string? Description
+        {
+            get { return description; }
+            set
+            {
+                description = value;
+                OnPropertyChanged();
+            }
+        }
 
+        [JsonIgnore]
+        public DateTimeOffset End
+        {
+            get { return end; }
+            set
+            {
+                end = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public DateTimeOffset Start
+        {
+            get { return start; }
+            set
+            {
+                start = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public Guid Id
+        {
+            get { return id; }
+            set
+            {
+                id = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public bool RequireConfirmation
+        {
+            get { return requireConfirmation; }
+            set
+            {
+                requireConfirmation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        public Guid? RecurrenceId
+        {
+            get { return recurrenceId; }
+            set
+            {
+                recurrenceId = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
 
         private DateTimeOffset ChangeDate(DateTimeOffset dateTimeOffset, DateTimeOffset newDateTimeOffset)
         {
