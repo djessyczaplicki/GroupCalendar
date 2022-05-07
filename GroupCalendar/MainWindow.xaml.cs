@@ -58,7 +58,7 @@ namespace GroupCalendar
             ApplicationState.SetValue("token", e.User.Credential.IdToken);
             ApplicationState.SetValue("uid", e.User.Uid);
             var user = await Repository.GetUserByIdAsync(e.User.Uid);
-            if (user.Groups.Length == 0)
+            if (user.Groups.Count == 0)
             {
                 // TODO: Control here if user has no group, and take the user to group creation
                 return;

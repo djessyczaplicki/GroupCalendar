@@ -9,106 +9,182 @@
       xmlns:uc="clr-namespace:GroupCalendar.Items"
       xmlns:model="clr-namespace:GroupCalendar.Data.Remote.Model"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="800"  
       Background="White"
       Title="TimetableView">
     <Page.Resources>
         <vm:TimetableViewModel x:Key="vm"/>
     </Page.Resources>
-    <materialDesign:DialogHost CloseOnClickAway="True">
-        <materialDesign:DialogHost.DialogContent>
-            <Border CornerRadius="25" Background="White" Padding="5">
-                <Frame Source="editeventpage.xaml" MinHeight="400" Width="700" NavigationUIVisibility="Hidden">
-                </Frame>
-            </Border>
-        </materialDesign:DialogHost.DialogContent>
-        <Grid DataContext="{StaticResource vm}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
-            <Grid Height="90" Background="#d9e2ff">
-                <DockPanel>
-                    <uc:StatusBar DockPanel.Dock="Top" Height="25" />
-                    <Button DockPanel.Dock="Left"
-                            Margin="5"
-                            Command="{Binding OpenDrawer}"
-                            Foreground="#00184a"
-                            Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="Menu" />
-                    </Button>
-                    <Button DockPanel.Dock="Left"
-                            Margin="5"
-                            Command="{Binding PrevWeekCommand}"
-                            Foreground="#00184a"
-                            Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="ArrowLeftBoldOutline" />
-                    </Button>
-                    <TextBlock DockPanel.Dock="Left"
-                               Margin="10 5 0 10"
-                               FontWeight="SemiBold"
-                               FontSize="20"
-                               Foreground="#00184a"
-                               VerticalAlignment="Center"
-                               Text="Horario: "/>
-                    <TextBlock DockPanel.Dock="Left"
-                               Margin="0 5 0 10"
-                               FontWeight="SemiBold"
-                               FontSize="20"
-                               Foreground="#00184a"
-                               VerticalAlignment="Center"
-                               Text="Juanito"/>
-                    <Button DockPanel.Dock="Right"
-                            Margin="5"
-                            Command="{Binding NextWeekCommand}"
-                            Foreground="#00184a"
-                            Style="{StaticResource MaterialDesignIconButton}">
-                        <materialDesign:PackIcon Kind="ArrowRightBoldOutline" />
-                    </Button>
-                    <Label/>
-                </DockPanel>
-                
-            </Grid>
-            
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+    <DockPanel>
+        <uc:StatusBar DockPanel.Dock="Top" Height="25" Background="#d9e2ff" />
+        <materialDesign:DialogHost CloseOnClickAway="True">
+            <materialDesign:DialogHost.DialogContent>
+                <Border CornerRadius="25" Background="White" Padding="5">
+                    <Frame Source="editeventpage.xaml" MinHeight="400" Width="700" NavigationUIVisibility="Hidden">
+                    </Frame>
+                </Border>
+            </materialDesign:DialogHost.DialogContent>
 
-            
-                <uc:BasicDayHeader Margin="40,5,18,5" FirstDay="{Binding FirstDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <uc:BasicSidebarLabel></uc:BasicSidebarLabel>
-                        <uc:Schedule FirstDay="{Binding FirstDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" EventModels="{Binding EventsToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <materialDesign:DrawerHost DataContext="{StaticResource vm}"
+                x:Name="DrawerHost"
+                BorderBrush="{DynamicResource MaterialDesignDivider}"
+                Padding="0"
+                BottomDrawerCornerRadius="20 20 0 0"
+                BottomDrawerBackground="{DynamicResource SecondaryHueLightBrush}">
+                <materialDesign:DrawerHost.Style>
+                    <Style
+                        TargetType="materialDesign:DrawerHost"
+                        BasedOn="{StaticResource {x:Type materialDesign:DrawerHost}}">
+                    </Style>
+                </materialDesign:DrawerHost.Style>
+                <materialDesign:DrawerHost.LeftDrawerContent >
+                    <Grid Background="#d9e2ff" MinWidth="300">
+                        <StackPanel
+                        Margin="16" >
+                            <StackPanel>
+                                <Button
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                ToolTip="Ver todos los eventos"
+                                FontSize="18"
+                                Margin="5"
+                                Height="50"
+                                Command="{Binding ShowAllEventsCommand}"
+                                Foreground="#3b5ba9"
+                                Content="Ver todos los eventos"/>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"  />
+                            </StackPanel>
+                            <TextBlock
+                                FontSize="20"
+                                FontWeight="Bold"
+                                Foreground="#00184a"
+                                Margin="4"
+                                Text="Mis grupos:" />
+                            <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
 
+                                <ListView ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <uc:GroupItem Margin="1.5" Width="350" GroupName="{Binding Name}" GroupImage="{Binding Image}" GroupId="{Binding Id}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                            </ScrollViewer>
+                            <Button
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                ToolTip="Crear grupo"
+                                FontSize="18"
+                                Margin="5"
+                                Height="50"
+                                Command="{Binding CreateGroupCommand}"
+                                Foreground="#3b5ba9"
+                                Content="Crear un nuevo grupo"/>
+                            <Button
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                HorizontalAlignment="Left"
+                                ToolTip="Desconectarse"
+                                FontSize="18"
+                                Margin="5"
+                                Height="50"
+                                Command="{Binding DisconnectCommand}"
+                                Foreground="#3b5ba9"
+                                Content="Desconectarse"/>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:DrawerHost.LeftDrawerContent>
+
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid Height="70" Background="#d9e2ff">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Left"
+                                Margin="5"
+                                Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                                Foreground="#00184a"
+                                Style="{StaticResource MaterialDesignIconButton}">
+                                <materialDesign:PackIcon Kind="Menu" />
+                            </Button>
+                            <Button DockPanel.Dock="Left"
+                                Margin="5"
+                                Command="{Binding PrevWeekCommand}"
+                                Foreground="#00184a"
+                                Style="{StaticResource MaterialDesignIconButton}">
+                                <materialDesign:PackIcon Kind="ArrowLeftBoldOutline" />
+                            </Button>
+                            <TextBlock DockPanel.Dock="Left"
+                                   Margin="10 5 0 10"
+                                   FontWeight="SemiBold"
+                                   FontSize="20"
+                                   Foreground="#00184a"
+                                   VerticalAlignment="Center"
+                                   Text="Horario: "/>
+                            <TextBlock DockPanel.Dock="Left"
+                                   Margin="0 5 0 10"
+                                   FontWeight="SemiBold"
+                                   FontSize="20"
+                                   Foreground="#00184a"
+                                   VerticalAlignment="Center"
+                                   Text="{Binding Group.Name}"/>
+                            <Button DockPanel.Dock="Right"
+                                Margin="5"
+                                Command="{Binding NextWeekCommand}"
+                                Foreground="#00184a"
+                                Style="{StaticResource MaterialDesignIconButton}">
+                                <materialDesign:PackIcon Kind="ArrowRightBoldOutline" />
+                            </Button>
+                            <Label/>
+                        </DockPanel>
 
                     </Grid>
-                
-                </ScrollViewer>
-            
-                <Button Grid.Row="1"
-                  Style="{StaticResource MaterialDesignFloatingActionLightButton}"
-                  Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                  ToolTip="Añadir evento"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Bottom"
-                  Margin="0,0,30,30"
-                  Background="#d9e2ff"
-                  BorderBrush="#d9e2ff"
-                  Cursor="Hand">
-                    <materialDesign:PackIcon
-                        Kind="Plus"
-                        Foreground="#00184a"
-                        Height="20"
-                        Width="20"/>
-                </Button>
-            </Grid>
-        </Grid>
-    </materialDesign:DialogHost>
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+
+                        <uc:BasicDayHeader Margin="40,5,18,5" FirstDay="{Binding FirstDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <uc:BasicSidebarLabel></uc:BasicSidebarLabel>
+                                <uc:Schedule FirstDay="{Binding FirstDay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" EventModels="{Binding EventsToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                            </Grid>
+
+                        </ScrollViewer>
+
+                        <Button Grid.Row="1"
+                      Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                      Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                      ToolTip="Añadir evento"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Bottom"
+                      Margin="0,0,30,30"
+                      Background="#d9e2ff"
+                      BorderBrush="#d9e2ff"
+                      Cursor="Hand">
+                            <materialDesign:PackIcon
+                            Kind="Plus"
+                            Foreground="#00184a"
+                            Height="20"
+                            Width="20"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </materialDesign:DrawerHost>
+        </materialDesign:DialogHost>
+    </DockPanel>
+
 </Page>

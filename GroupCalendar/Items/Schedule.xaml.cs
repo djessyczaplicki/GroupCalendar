@@ -127,8 +127,8 @@ namespace GroupCalendar.Items
         private BasicEvent DrawEvent(EventModel eventModel)
         {
             var basicEvent = new BasicEvent(eventModel);
-            var minuteHeight = hourHeight / 60;
-            var minEventHeight = hourHeight / 4;
+            var minuteHeight = hourHeight / 60f;
+            var minEventHeight = hourHeight / 4f;
             var eventTop = eventModel.Start.Hour * hourHeight + eventModel.Start.Minute * minuteHeight;
             var eventLeft = GetEventLeft(eventModel, eventWidth);
             var eventHeight = Math.Max((eventModel.End.Hour - eventModel.Start.Hour) * hourHeight + (eventModel.End.Minute - eventModel.Start.Minute) * minuteHeight, minEventHeight);

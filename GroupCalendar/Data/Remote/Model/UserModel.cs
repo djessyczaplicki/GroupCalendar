@@ -3,6 +3,7 @@
     using GroupCalendar.Core;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
 
     public partial class UserModel
@@ -11,7 +12,7 @@
         public string Email { get; set; } = "user@example.com";
 
         [JsonProperty("groups")]
-        public Guid[] Groups { get; set; } = new Guid[] { };
+        public List<Guid> Groups { get; set; } = new List<Guid>();
 
         [JsonProperty("id")]
         public string Id { get; set; } = "0";
