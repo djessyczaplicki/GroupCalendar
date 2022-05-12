@@ -3,13 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="clr-namespace:GroupCalendar.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="150" Padding="1">
-    <UserControl.Resources>
-        <vm:TimetableViewModel x:Key="vm"/>
-    </UserControl.Resources>
-    <Border x:Name="EventBackground" Padding="10 4 10 1" CornerRadius="5" DataContext="{StaticResource vm}" MouseLeftButtonUp="EventBackgroundMouseLeftButtonUp">
+    <Border x:Name="EventBackground" Padding="10 4 10 1" CornerRadius="5" MouseLeftButtonUp="EventBackgroundMouseLeftButtonUp">
         <Border.Effect>
             <DropShadowEffect Direction="290" Opacity=".25" BlurRadius="5" ShadowDepth="3"/>
         </Border.Effect>

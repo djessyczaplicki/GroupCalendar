@@ -60,12 +60,18 @@
                                 Foreground="#00184a"
                                 Margin="4"
                                 Text="Mis grupos:" />
-                            <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto" x:Name="ListView">
 
                                 <ListView ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <uc:GroupItem Margin="1.5" Width="350" GroupName="{Binding Name}" GroupImage="{Binding Image}" GroupId="{Binding Id}" />
+                                            <uc:GroupItem 
+                                                Margin="1.5" Width="350" 
+                                                GroupName="{Binding Name}" 
+                                                GroupImage="{Binding Image}" 
+                                                GroupId="{Binding Id}" 
+                                                LeaveGroupCommand="{Binding ElementName=ListView, Path=DataContext.LeaveGroupCommand}"
+                                                IsAdmin="{Binding CurrentUserIsAdmin}"/>
                                         </DataTemplate>
                                     </ListView.ItemTemplate>
                                 </ListView>
@@ -166,20 +172,21 @@
                         </ScrollViewer>
 
                         <Button Grid.Row="1"
-                      Style="{StaticResource MaterialDesignFloatingActionLightButton}"
-                      Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
-                      ToolTip="Añadir evento"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="Bottom"
-                      Margin="0,0,30,30"
-                      Background="#d9e2ff"
-                      BorderBrush="#d9e2ff"
-                      Cursor="Hand">
+                            Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+                            Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"
+                            ToolTip="Añadir evento"
+                            HorizontalAlignment="Right"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            VerticalAlignment="Bottom"
+                            Margin="0,0,30,30"
+                            Background="#d9e2ff"
+                            BorderBrush="#d9e2ff"
+                            Cursor="Hand">
                             <materialDesign:PackIcon
-                            Kind="Plus"
-                            Foreground="#00184a"
-                            Height="20"
-                            Width="20"/>
+                                Kind="Plus"
+                                Foreground="#00184a"
+                                Height="20"
+                                Width="20"/>
                         </Button>
                     </Grid>
                 </Grid>

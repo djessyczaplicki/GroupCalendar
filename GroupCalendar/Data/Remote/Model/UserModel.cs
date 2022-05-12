@@ -6,7 +6,7 @@
     using System.Collections.Generic;
     using System.Globalization;
 
-    public partial class UserModel
+    public partial class UserModel : ObservableObject
     {
         [JsonProperty("email")]
         public string Email { get; set; } = "user@example.com";
@@ -30,7 +30,7 @@
         public int Age { get; set; }
 
 
-
+        [JsonIgnore]
         public string FullNameYou
         {
             get
@@ -39,6 +39,17 @@
                 var fullName = $"{Name} {Surname}{you}";
                 return CultureInfo.InvariantCulture.TextInfo.ToTitleCase(fullName.ToLower());
             }
+        }
+
+
+        [JsonIgnore]
+        private string role;
+
+        [JsonIgnore]
+        public string Role
+        {
+            get { return role; }
+            set { role = value; OnPropertyChanged(); }
         }
     }
 }

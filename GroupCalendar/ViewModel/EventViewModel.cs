@@ -32,6 +32,8 @@ namespace GroupCalendar.ViewModel
         public bool IsDeleting { get; private set; }
         public bool IsToggling { get; private set; }
 
+        public bool IsAdmin { get; private set; }
+
         public EventViewModel()
         {
             LoadEvent();
@@ -64,6 +66,7 @@ namespace GroupCalendar.ViewModel
             groupId = ApplicationState.GetValue<Guid>("group_id");
             if (groupId == Guid.Empty) throw new Exception("GroupId is missing");
             Group = await Repository.GetGroupByIdAsync(groupId.ToString());
+            UpdateUserPermissions();
             eventId = ApplicationState.GetValue<Guid>("event_id");
             if (eventId == Guid.Empty) throw new Exception("EventId is missing");
             EventModel = Group.Events.Find(e => e.Id == eventId);
@@ -74,7 +77,12 @@ namespace GroupCalendar.ViewModel
             CheckAttendance();
         }
 
-
+        private void UpdateUserPermissions()
+        {
+            var uid = ApplicationState.GetValue<string>("uid");
+            IsAdmin = Group.Admins.Contains(uid);
+            OnPropertyChanged(nameof(IsAdmin));
+        }
 
         private void CheckAttendance()
         {
@@ -118,7 +126,6 @@ namespace GroupCalendar.ViewModel
                     case MessageBoxResult.Cancel:
                         IsDeleting = false;
                         return;
-                        break;
                 }
             }
             await Repository.UpdateGroupEventsAsync(group);

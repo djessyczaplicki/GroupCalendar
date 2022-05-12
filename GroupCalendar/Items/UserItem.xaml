@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="GroupCalendar.Items.UserItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GroupCalendar.Items"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:conv="clr-namespace:GroupCalendar.ViewModel.Converter"
+             xmlns:view="clr-namespace:GroupCalendar.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="400" d:Background="White"
+             x:Name="root">
+    <UserControl.Resources>
+        <conv:InverseRoleToVisibilityConverter x:Key="InverRoleToVisibilityConverter"/>
+        <conv:RoleToVisibilityConverter x:Key="RoleToVisibilityConverter"/>
+    </UserControl.Resources>
+    <DockPanel LastChildFill="False" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Stretch"
+               >
+        <TextBlock 
+            Margin="5" 
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserItem}}, Path=FullNameYou}" 
+            d:Text="Juanito Pablito"
+            FontWeight="SemiBold"/>
+        
+        <Menu DockPanel.Dock="Right">
+            <MenuItem
+                Style="{StaticResource MaterialDesignMenuItem}"
+                Foreground="Gray"
+                Cursor="Hand">
+                <MenuItem.Header>
+                    <materialDesign:PackIcon
+                        Kind="DotsVertical"
+                        Foreground="Gray"
+                        Height="20"
+                        Width="20"/>
+                </MenuItem.Header>
+                <MenuItem Header="Designar como admin. del grupo" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserItem}}, Path=Role, Converter={StaticResource InverRoleToVisibilityConverter}}" 
+                          Command="{Binding MakeAdmin, ElementName=root}" CommandParameter="{Binding UserId, ElementName=root}" />
+                <MenuItem Header="Descartar como admin. del grupo" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserItem}}, Path=Role, Converter={StaticResource RoleToVisibilityConverter}}" 
+                          Command="{Binding RemoveAdmin, ElementName=root}" CommandParameter="{Binding UserId, ElementName=root}" />
+                <MenuItem Header="Quitar usuario" 
+                          Command="{Binding RemoveUser, ElementName=root}" CommandParameter="{Binding UserId, ElementName=root}" />
+            </MenuItem>
+        </Menu>
+        <TextBlock 
+            DockPanel.Dock="Right" 
+            Margin="5 5 5 5" 
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:UserItem}}, Path=Role}" 
+            d:Text="Admin"/>
+
+    </DockPanel>
+</UserControl>

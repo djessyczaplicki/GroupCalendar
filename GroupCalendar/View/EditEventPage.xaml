@@ -18,7 +18,7 @@
         <vm:EditEventViewModel x:Key="vm"/>
         <validation:FutureDateValidationRule x:Key="FutureDateValidationRule" />
         <BooleanToVisibilityConverter x:Key="BoolTovisible" />
-        <converter:ColorBrushConverter x:Key="ColorConverter"/>
+        <converter:ColorConverter x:Key="ColorConverter"/>
         <converter:DateConverter x:Key="DateConverter"/>
         <converter:TimeConverter x:Key="TimeConverter"/>
     </Page.Resources>
@@ -157,12 +157,12 @@
             </DockPanel>
             <DockPanel Margin="5" 
                        Visibility="{
-                        Binding ShowEditAll, 
-                        Converter={
+                         Binding ShowEditAll, 
+                         Converter={
                             StaticResource BoolTovisible
-                        },
-                        UpdateSourceTrigger=PropertyChanged
-                    }" >
+                         },
+                         UpdateSourceTrigger=PropertyChanged
+                        }">
                 <Label DockPanel.Dock="Left">¿Modificar todas las repeticiones?</Label>
                 <ToggleButton 
                     
@@ -174,8 +174,10 @@
                 materialDesign:ButtonProgressAssist.Value="-1"
                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoading}"
                 materialDesign:ButtonProgressAssist.IsIndeterminate="True"
-                    Command="{Binding SendCommand}"
-                    Content="{Binding ButtonText}">
+                Command="{Binding SendCommand}"
+                Content="{Binding ButtonText}"
+                Background="#d9e2ff"
+                Foreground="#00184a">
             </Button>
 
         </StackPanel>

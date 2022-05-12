@@ -22,6 +22,7 @@ namespace GroupCalendar.ViewModel
         private Guid eventId;
         public ICommand SendCommand { get; set; }
         public ICommand BackCommand { get; set; }
+        public bool IsAdmin { get; set; }
 
         private EventModel eventModel = new EventModel
         {
@@ -142,6 +143,7 @@ namespace GroupCalendar.ViewModel
             OnPropertyChanged("EventModel");
             OnPropertyChanged("ShowEditAll");
         }
+
 
         private string Capitalize(string str)
         {

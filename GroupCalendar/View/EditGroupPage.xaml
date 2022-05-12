@@ -5,13 +5,121 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:GroupCalendar.View"
       xmlns:vm="clr-namespace:GroupCalendar.ViewModel"
+      xmlns:uc="clr-namespace:GroupCalendar.Items"
+      xmlns:conv="clr-namespace:GroupCalendar.ViewModel.Converter"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="800" d:Background="White"
       Title="EditGroup">
     <Page.Resources>
         <vm:EditGroupViewModel x:Key="vm"/>
+        <conv:BoolToSpanConverter x:Key="BoolToSpanConverter"/>
+        <conv:ActualWidthConverter x:Key="ActualWidthConverter"/>
     </Page.Resources>
-    <Grid>
-        <TextBox Text="{Binding Name}"></TextBox>
+    <Grid DataContext="{StaticResource vm}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <uc:StatusBar/>
+        <Button Grid.Row="1"
+                HorizontalAlignment="Left"
+                    Margin="5,0,0,0"
+                    Command="{Binding BackCommand}"
+                    Foreground="#00184a"
+                    Style="{StaticResource MaterialDesignIconButton}" Cursor="Hand">
+            <materialDesign:PackIcon Kind="ArrowLeft" />
+        </Button>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+        
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="{Binding IsEditing, Converter={StaticResource BoolToSpanConverter}}" >
+                <Grid Width="100" Height="100" Margin="5,5,10,5">
+                    <Border CornerRadius="50">
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick"  Command="{Binding SearchImageCommand}"/>
+                        </Border.InputBindings>
+                        <Border.Background>
+                            <ImageBrush
+                            ImageSource="{Binding Image, UpdateSourceTrigger=PropertyChanged}"
+                            d:ImageSource="https://media.istockphoto.com/photos/group-portrait-of-a-creative-business-team-standing-outdoors-three-picture-id1146473249?s=170667a" 
+                            Stretch="UniformToFill" />
+                        </Border.Background>
+                    </Border>
+                </Grid>
+                <TextBox materialDesign:HintAssist.Hint="Nombre del grupo"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                    VerticalAlignment="Center"
+                    Text="{Binding Group.Name, UpdateSourceTrigger=PropertyChanged}" 
+                    MaxWidth="300" 
+                    Margin="15" Cursor="Arrow"/>
+                <TextBox materialDesign:HintAssist.Hint="Descripción del grupo"
+                    Style="{StaticResource MaterialDesignOutlinedTextBox}" 
+                    TextWrapping="Wrap" 
+                    Height="60" 
+                    Text="{Binding Group.Description}" 
+                    MaxWidth="300"
+                    Margin="15" Cursor="Arrow"/>
+                <Button Margin="25" 
+                    Visibility="{Binding IsEditing, Converter={StaticResource InverseBoolToVisConverter}}"
+                    Background="#d9e2ff"
+                    Foreground="#00184a"
+                    MaxWidth="200"
+                    Command="{Binding SendCommand}"
+                    Content="Crear Grupo"/>
+                <Button Margin="25" 
+                    Visibility="{Binding IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Background="#d9e2ff"
+                    Foreground="#00184a"
+                    MaxWidth="200"
+                    Command="{Binding SendCommand}"
+                    Content="Guardar cambios"/>
+            
+            </StackPanel>
+            <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock FontSize="14" Margin="15 10 15 0">Miembros</TextBlock>
+                <Border BorderThickness="1" Margin="15 10 15 0" BorderBrush="Gray" x:Name="ListView">
+                    <ListView ItemsSource="{Binding Users}" materialDesign:ListBoxItemAssist.ShowSelection="False">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <uc:UserItem 
+                                    FullNameYou="{Binding FullNameYou}" 
+                                    Role="{Binding Role}"  
+                                    Width="{Binding ActualWidth, ElementName=ListView, Converter={StaticResource ActualWidthConverter}}"
+                                    MakeAdmin="{Binding ElementName=ListView, Path=DataContext.MakeAdminCommand}" 
+                                    RemoveAdmin="{Binding ElementName=ListView, Path=DataContext.RemoveAdminCommand}"
+                                    RemoveUser="{Binding ElementName=ListView, Path=DataContext.RemoveUserCommand}"
+                                    UserId="{Binding Id}" />
+
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Border>
+            </StackPanel>
+        </Grid>
+        <Button Grid.Row="2"
+            Visibility="{Binding IsEditing, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Style="{StaticResource MaterialDesignFloatingActionLightButton}"
+            Command="{Binding DeleteCommand}"
+            ToolTip="Añadir evento"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,30,30"
+            Background="#d9e2ff"
+            BorderBrush="#d9e2ff"
+            Cursor="Hand">
+            <materialDesign:PackIcon
+                Kind="Trash"
+                Foreground="#00184a"
+                Height="20"
+                Width="20"/>
+        </Button>
+        
     </Grid>
+    
 </Page>

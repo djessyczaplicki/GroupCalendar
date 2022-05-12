@@ -44,6 +44,49 @@ namespace GroupCalendar.Data.Network
             return data;
         }
 
+        public static async Task<GroupModel> UpdateGroupAsync(GroupModel group)
+        {
+            try
+            {
+                var uri = $"{baseUrl}/groups/{group.Id}.json";
+                var updatedGroupJson = await ApiClient.Put(uri, group);
+                var updatedGroup = JsonConvert.DeserializeObject<GroupModel>(updatedGroupJson, ApiClient.GetJsonSettings());
+                return updatedGroup;
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message);
+            }
+        }
+
+        internal static async Task DeleteGroupAsync(Guid id)
+        {
+            try
+            {
+                var uri = $"{baseUrl}/groups/{id}.json";
+                var deletedGroup = await ApiClient.Delete(uri);
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message);
+            }
+        }
+
+        internal static async Task<UserModel> UpdateUserAsync(UserModel user)
+        {
+            try
+            {
+                var uri = $"{baseUrl}/users/{user.Id}.json";
+                var updatedUserJson = await ApiClient.Put(uri, user);
+                var updatedUser = JsonConvert.DeserializeObject<UserModel>(updatedUserJson, ApiClient.GetJsonSettings());
+                return updatedUser;
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message);
+            }
+        }
+
         public static async Task<List<EventModel>> UpdateGroupEventsAsync(GroupModel group)
         {
             try

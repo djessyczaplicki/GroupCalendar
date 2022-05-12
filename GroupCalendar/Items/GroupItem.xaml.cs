@@ -1,9 +1,11 @@
 ﻿using GroupCalendar.Core;
 using GroupCalendar.View;
+using GroupCalendar.ViewModel.Commands;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace GroupCalendar.Items
 {
@@ -38,6 +40,34 @@ namespace GroupCalendar.Items
 
 
 
+
+        public bool IsAdmin
+        {
+            get { return (bool)GetValue(IsAdminProperty); }
+            set { SetValue(IsAdminProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsAdmin.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsAdminProperty =
+            DependencyProperty.Register("IsAdmin", typeof(bool), typeof(GroupItem), new PropertyMetadata(false));
+
+
+
+
+
+        public ICommand LeaveGroupCommand
+        {
+            get { return (ICommand)GetValue(LeaveGroupCommandProperty); }
+            set { SetValue(LeaveGroupCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LeaveGroupCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LeaveGroupCommandProperty =
+            DependencyProperty.Register("LeaveGroupCommand", typeof(ICommand), typeof(GroupItem), new PropertyMetadata(new RelayCommand(o => o.ToString())));
+
+
+
+
         public Guid GroupId
         {
             get { return (Guid)GetValue(GroupIdProperty); }
@@ -58,6 +88,7 @@ namespace GroupCalendar.Items
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ApplicationState.SetValue("group_id", GroupId);
+            ApplicationState.SetValue("is_editing", true);
             DrawerHost.CloseDrawerCommand.Execute(null, null);
             StaticResources.mainWindow.Frame.Content = new EditGroupPage();
         }

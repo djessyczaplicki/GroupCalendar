@@ -44,6 +44,7 @@
             </Button>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Margin="0,0,5,0"
+                    Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Click="EditEventClick" 
                     Foreground="white"
                     Background="Transparent" 
@@ -131,7 +132,7 @@
                 <TextBlock Text="):" Margin="0" VerticalAlignment="Center"/>
             </StackPanel>
             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="15">
-                <ListView FontWeight="SemiBold" MaxHeight="300" ItemsSource="{Binding Users}">
+                <ListView FontWeight="SemiBold" MaxHeight="300" ItemsSource="{Binding Users}" materialDesign:ListBoxItemAssist.ShowSelection="False">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding FullNameYou}"/>
@@ -141,6 +142,7 @@
             </ScrollViewer>
         </StackPanel>
         <Button Grid.Row="2" Grid.Column="1"
+            Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"    
             Style="{StaticResource MaterialDesignFloatingActionLightButton}"
             Command="{Binding DeleteEventCommand}"
             ToolTip="Eliminar evento"
