@@ -43,15 +43,16 @@
                         Margin="16" >
                             <StackPanel>
                                 <Button
-                                Style="{StaticResource MaterialDesignFlatButton}"
-                                HorizontalAlignment="Left"
-                                ToolTip="Ver todos los eventos"
-                                FontSize="18"
-                                Margin="5"
-                                Height="50"
-                                Command="{Binding ShowAllEventsCommand}"
-                                Foreground="#3b5ba9"
-                                Content="Ver todos los eventos"/>
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    HorizontalAlignment="Left"
+                                    ToolTip="Ver todos los eventos"
+                                    FontSize="18"
+                                    Margin="5"
+                                    Height="50"
+                                    Command="{Binding ShowAllEventsCommand}"
+                                    Foreground="#3b5ba9"
+                                    Content="Ver todos los eventos"/>
+
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"  />
                             </StackPanel>
                             <TextBlock
@@ -73,10 +74,27 @@
                                                 LeaveGroupCommand="{Binding ElementName=ListView, Path=DataContext.LeaveGroupCommand}"
                                                 IsAdmin="{Binding CurrentUserIsAdmin}"/>
                                         </DataTemplate>
+
                                     </ListView.ItemTemplate>
+
                                 </ListView>
 
                             </ScrollViewer>
+
+                            <DockPanel Margin="5">
+                                <TextBox materialDesign:HintAssist.Hint="Introduce una invitación de Grupo para unirte" 
+                                         TextWrapping="Wrap" 
+                                         Text="{Binding GroupInviteLink, UpdateSourceTrigger=PropertyChanged}"
+                                         Width="320" />
+                                <Button Margin="0,0,5,0"
+                                        Foreground="#00184a"
+                                        HorizontalAlignment="Right"
+                                        ToolTip="Unirse a un nuevo grupo"
+                                        Style="{StaticResource MaterialDesignIconButton}" Cursor="Hand"
+                                        Command="{Binding JoinGroupCommand}">
+                                    <materialDesign:PackIcon Kind="Plus"/>
+                                </Button>
+                            </DockPanel>
                             <Button
                                 Style="{StaticResource MaterialDesignFlatButton}"
                                 HorizontalAlignment="Left"

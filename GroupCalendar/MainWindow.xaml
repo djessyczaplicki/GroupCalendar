@@ -12,8 +12,8 @@
          TextOptions.TextFormattingMode="Ideal"
          TextOptions.TextRenderingMode="Auto"
          Background="{DynamicResource MaterialDesignPaper}"
-         FontFamily="{DynamicResource MaterialDesignFont}" MinHeight="620" MinWidth="400"
-        Title="Calendario de Grupo" Height="500" Width="800">
+         FontFamily="{DynamicResource MaterialDesignFont}" MinHeight="680" MinWidth="480"
+        Title="Calendario de Grupo" Height="600" Width="800">
     <Grid>
         <Frame x:Name="Frame" NavigationUIVisibility="Hidden" Source="./View/LoginPage.xaml"/>
     </Grid>

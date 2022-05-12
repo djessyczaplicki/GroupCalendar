@@ -26,8 +26,11 @@ namespace GroupCalendar.ViewModel
         public ICommand CreateGroupCommand { get; set; }
         public ICommand DisconnectCommand { get; set; }
         public ICommand LeaveGroupCommand { get; set; }
+        public ICommand JoinGroupCommand { get; set; }
+        public string GroupInviteLink { get; set; }
 
-        public bool IsAdmin { get; set; }
+        public bool IsAdmin
+        { get; set; }
 
         public ObservableCollection<EventModel> EventModels
         { get; set; } = new ObservableCollection<EventModel>();
@@ -88,6 +91,65 @@ namespace GroupCalendar.ViewModel
             CreateGroupCommand = new RelayCommand(o => CreateGroup());
             DisconnectCommand = new RelayCommand(o => Disconnect());
             LeaveGroupCommand = new RelayCommand(o => LeaveGroup(o));
+            JoinGroupCommand = new RelayCommand(o => JoinGroup());
+        }
+
+        private async void JoinGroup()
+        {
+            var groupId = GetGroupId();
+            if (groupId == Guid.Empty)
+            {
+                MessageBox.Show("La invitación de grupo tiene un formato inválido");
+                return;
+            }
+            GroupModel newGroup;
+            try
+            {
+                newGroup = await Repository.GetGroupByIdAsync(groupId.ToString());
+            }
+            catch
+            {
+                MessageBox.Show("No se ha encontrado el grupo");
+                return;
+            }
+
+            if (User.Groups.Contains(groupId))
+            {
+                MessageBox.Show("¡Ya eres miembro de este grupo!");
+                return;
+            }
+            User.Groups.Add(groupId);
+            User = await Repository.UpdateUserAsync(User);
+
+
+            if (newGroup.Users.Contains(User.Id))
+            {
+                MessageBox.Show("¡Ya eres miembro de este grupo!");
+                return;
+            }
+
+            newGroup.Users.Add(User.Id);
+            await Repository.UpdateGroupAsync(newGroup);
+
+
+
+            ApplicationState.SetValue("group_id", groupId);
+            StaticResources.mainWindow.Frame.Content = new TimetablePage();
+        }
+
+        private Guid GetGroupId()
+        {
+            var parts = GroupInviteLink.Split('/');
+            var reversedParts = parts.Reverse().ToList();
+            try
+            {
+                return new Guid(reversedParts[0]);
+            }
+            catch
+            {
+                return Guid.Empty;
+            }
+
         }
 
         private async void LeaveGroup(object o)
@@ -100,12 +162,13 @@ namespace GroupCalendar.ViewModel
                 var userId = ApplicationState.GetValue<string>("uid");
                 group.Admins.Remove(userId);
                 group.Users.Remove(userId);
-                await Repository.UpdateGroupAsync(Group);
+                await Repository.UpdateGroupAsync(group);
 
                 if (User != null)
                 {
                     User.Groups.Remove(groupId);
-                    await Repository.UpdateUserAsync(User);
+                    User = await Repository.UpdateUserAsync(User);
+                    ApplicationState.SetValue("group_id", User.Groups[0]);
                     StaticResources.mainWindow.Frame.Content = new TimetablePage();
                 }
             }

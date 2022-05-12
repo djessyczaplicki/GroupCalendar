@@ -27,6 +27,7 @@ namespace GroupCalendar.ViewModel
         public ICommand MakeAdminCommand { get; set; }
         public ICommand RemoveAdminCommand { get; set; }
         public ICommand RemoveUserCommand { get; set; }
+        public ICommand ShowInviteLinkCommand { get; private set; }
 
         public GroupModel Group { get; set; } = new GroupModel();
         public Uri Image { get; set; } = new Uri("https://uning.es/wp-content/uploads/2016/08/ef3-placeholder-image.jpg");
@@ -59,6 +60,7 @@ namespace GroupCalendar.ViewModel
             MakeAdminCommand = new RelayCommand(o => MakeAdmin(o));
             RemoveAdminCommand = new RelayCommand(o => RemoveAdmin(o));
             RemoveUserCommand = new RelayCommand(o => RemoveUser(o));
+            ShowInviteLinkCommand = new RelayCommand(o => ShowInviteLink());
         }
 
         private async void MakeAdmin(object o)
@@ -189,6 +191,15 @@ namespace GroupCalendar.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void ShowInviteLink()
+        {
+            var link = $"https://groupcalendar.djessyczaplicki.com/invite/{GroupId}";
+            var message = $"¡Se ha copiado la invitación '{link}' al portapapeles!";
+            System.Windows.Clipboard.SetText(link);
+            System.Windows.MessageBox.Show(message);
+        }
+
 
         private async void SendGroup()
         {
